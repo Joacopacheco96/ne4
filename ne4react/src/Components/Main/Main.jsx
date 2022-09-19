@@ -6,15 +6,16 @@ const Main = () => {
 useEffect(() => {          
     home();
     }, []);
+
 function home() {
-        fetch(`http://localhost:3001/`, {
+        fetch(`http://localhost:3001/figuritas/`, {
       method: "GET",})
       .then((response) => response.json())
       .then((result) => {setDatabase(result)}
       );
     }
 function tengo () {
-            fetch(`http://localhost:3001/tengo`, {
+            fetch(`http://localhost:3001/figuritas/tengo/`, {
           method: "GET",})
           .then((response) => response.json())
           .then((result) => {setDatabase(result)}
@@ -30,14 +31,14 @@ function tengo () {
             <button onClick={tengo}>Figuritas Tengo</button>
         </div>
       <div>
-        {database.map((figurita) => {
+        { database.map((figurita) => {
           return (
             <div>
               <p>ID: {figurita.id}</p>
-              <p>Nombre: {figurita.nombre}</p>
-              <p>Categoria: {figurita.categoria}</p>
-              <p>Repetidas: {figurita.repetida}</p>
-              <button className="iftengo"></button>
+              <p>Nombre: {figurita.name}</p>
+              <p>Categoria: {figurita.category}</p>
+              <p>Repetidas: {figurita.repeat}</p>
+              <button className="iftengo">Tengo</button>
               <p>----------------------------------</p>
             </div>
           );

@@ -44,11 +44,11 @@ router.post("/login",async (req, res) => {
     );
 
     res
-      .json({ error: null, data: "SUCCESSFUL LOGIN!", token })
+      .json({success: true, token })
       .status(200);
   } else {
     res
-      .json({ error: "Usuario o password ivalido.", data: "UNSUCCESSFUL LOGIN!" })
+      .json({succes: false })
       .status(200);
   }
 });

@@ -19,7 +19,7 @@ router.get("/tengo", (req, res, next) => {
     .columns("id", "name", "category", "url", "have", "repeat")
     .select()
     .from("figuritas")
-    .where("tengo", true)
+    .where("have", true)
     .then((resultados) => {
       res.json(resultados);
       next();
