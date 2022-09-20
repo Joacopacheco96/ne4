@@ -1,76 +1,98 @@
 import { React, useState, useEffect } from "react";
 
 const Main = () => {
-  const [database, setDatabase] = useState([]);
+  const [database, setDatabase] = useState();
+  
 
-  useEffect(() => {          
-    home();
-    },[] );
+  useEffect(() => {
+    ifTengo('')          
+    },[]);
 
-function home() {
-        fetch(`http://localhost:3001/figuritas/`, {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'auth-token':localStorage.getItem('jwt')
-      }})
-      .then((response) => response.json())
-      .then((result) => {setDatabase(result)}
-      );
-    }
-function tengo() {
-            fetch(`http://localhost:3001/figuritas/tengo/`, {
-          method: "GET",})
+function ifTengo(endpoint) {
+            fetch(`http://localhost:3001/figuritas/${endpoint}`, {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'auth-token':localStorage.getItem('jwt')
+          }})
           .then((response) => response.json())
           .then((result) => {setDatabase(result)}
           );
-      
-  };
+        }
 
-  // onClick={handlehave(figurita)}
   const handlehave = (figurita) => {
-  
-    fetch(`http://localhost:3001/figuritas/repetidas`, {
-  method: "GET",
+    fetch(`http://localhost:3001/figuritas/have/`, {
+  method: "POST",
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'auth-token':localStorage.getItem('jwt'),
-body: JSON.stringify({
-  "figurita": {
-    "id": figurita.id,
-    "have": figurita.have,
+    'auth-token':localStorage.getItem('jwt')},
+body: JSON.stringify({"figurita":{
+  "id":figurita.id,
   }
 }),
-  }})
+  })
   .then((response) => response.json())
-  .then((result) => {setDatabase(result)}
+  .then((result) => {
+    if(result.success===true){
+      alert("exito al cambiar el estado");
+  }else{
+      alert("ocurrio un error, intentalo otra vez")
+  }
+  }
   );
-
+  }
+  const handleqty = (figurita) => {
+    fetch(`http://localhost:3001/figuritas/have/`, {
+  method: "POST",
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'auth-token':localStorage.getItem('jwt')},
+body: JSON.stringify({"figurita":{
+  "id":figurita.id,
+  }
+}),
+  })
+  .then((response) => response.json())
+  .then((result) => {
+    if(result.success===true){
+      alert("exito al cambiar el estado");
+  }else{
+      alert("ocurrio un error, intentalo otra vez")
+  }
+  }
+  );
   }
 
   return (
     <div>
       <h2>Lista de figuritas</h2>
         <div>
-            <button onClick={home}>Figuritas Home</button>
-            <button onClick={tengo}>Figuritas Tengo</button>
+            <button onClick={()=>ifTengo('')}>Figuritas Home</button>
+            <button onClick={()=>ifTengo('tengo')}>Figuritas Tengo</button>
+            <button onClick={()=>ifTengo('notengo')}>Figuritas No Tengo</button>
+            <button onClick={()=>ifTengo('repeat')}>Figuritas repetidas</button>
         </div>
+      {database?
       <div>
-        { database.map((figurita) => {
+        { database.map((figurita, key) => {
           return (
-            <div>
+            <div key={key}>
               <p>ID: {figurita.id}</p>
               <p>Nombre: {figurita.name}</p>
               <p>Categoria: {figurita.category}</p>
               <p>Repetidas: {figurita.repeat}</p>
-              <button >Tengo</button>
+              <button onClick={()=>handleqty(figurita)}>-</button>
+              <button onClick={()=>handleqty(figurita)}>+</button>
+              <button onClick={()=>handlehave(figurita)}>{figurita.have?'Tengo':'No Tengo'}</button>
               <p>----------------------------------</p>
             </div>
-          );
+          );        
         })}
       </div>
+      :null}
     </div>
   );
 };

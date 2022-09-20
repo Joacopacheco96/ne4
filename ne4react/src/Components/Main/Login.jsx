@@ -31,7 +31,7 @@ body: JSON.stringify({"user":{
                 localStorage.setItem('jwt',result.token);
                 navigate('/figuritas');
             }else{
-                console.log("Fue lo primero que se me ocurrio, usuario no ingreesado")
+                alert("Fue lo primero que se me ocurrio, usuario no ingreesado")
             }
         
         });

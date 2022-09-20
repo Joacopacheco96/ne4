@@ -9,11 +9,12 @@ router.get("/", (req, res, next) => {
     .select()
     .from("figuritas")
     .then((resultados) => {
-      res.json(resultados);
+      res.json(resultados).status(200);
       next();
     });
 });
 
+//SUPLANTAR POR REPEAT >0
 //where tengo==true
 router.get("/tengo", (req, res, next) => {
   const r = knex
@@ -22,11 +23,12 @@ router.get("/tengo", (req, res, next) => {
     .from("figuritas")
     .where("have", true)
     .then((resultados) => {
-      res.json(resultados);
+      res.json(resultados).status(200);
       next();
     });
 });
 
+//SUPLANTAR POR REPEAT<1
 //where tengo==false
 router.get("/notengo", (req, res, next) => {
   const r = knex
@@ -41,7 +43,7 @@ router.get("/notengo", (req, res, next) => {
 });
 
 //where repetidas
-router.get("/repetidas", (req, res, next) => {
+router.get("/repeat", (req, res, next) => {
   const r = knex
     .columns("id", "name", "category", "url", "have", "repeat")
     .select()
@@ -54,17 +56,29 @@ router.get("/repetidas", (req, res, next) => {
 });
 
 // modificar have column
-router.post("/repetidas", async (req, res, next) => {
+router.post("/have", async (req, res, next) => {
   const figuritaToChange = req.body.figurita;
   const query = await pool.query(
-    'UPDATE figuritas SET "have"=NOT have WHERE id=$1',
-    [figuritaToChange.id]
-  );
+    'UPDATE figuritas SET "have"=NOT have WHERE id=$1',[figuritaToChange.id]);
   const updatedRows = query.rowCount;
   if (updatedRows == 1) {
-    res.json({ updated: "success" }).status(200);
+    res.json({ success: true }).status(200);
   } else {
-    res.json({ updated: "ERROR" }).status(400);
+    res.json({ success: false }).status(400);
+  }
+  next();
+});
+
+// modificar repeat column
+router.post("/repeat", async (req, res, next) => {
+  const figuritaToChange = req.body.figurita;
+  const query = await pool.query(
+    'UPDATE figuritas SET "repeat"=repeat+1 WHERE id=$1',[figuritaToChange.id]);
+  const updatedRows = query.rowCount;
+  if (updatedRows == 1) {
+    res.json({ success: true }).status(200);
+  } else {
+    res.json({ success: false }).status(400);
   }
   next();
 });
