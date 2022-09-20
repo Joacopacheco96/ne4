@@ -7,14 +7,6 @@ const {
   verifyToken,
 } = require("../middlewares/jwt-verification");
 
-//get*users SOLO PRUEBA
-// router.get("/all", async (req, res, next) => {
-//   const queryUsers = await pool.query("SELECT * FROM users");
-//   const users = queryUsers.rows;
-//   res.json({ error: null, data: users }).status(200);
-//   next();
-// });
-
 //Register
 router.post("/register", async (req, res) => {
   const newUser = req.body.user;
@@ -22,8 +14,8 @@ router.post("/register", async (req, res) => {
   const passwordCrypted = await bcrypt.hash(newUser.password, salt);
   const query =await pool.query("INSERT INTO users (name, mail, password) VALUES ($1, $2, $3)",[newUser.name,newUser.mail,passwordCrypted])
   if(query.rowCount==1){
-  res.json({ error: null, data: "SUCCESSFUL REGISTER!", createdUser: newUser }).status(200);}
-  else{res.json({ error: true, data: "UNSUCCESSFUL REGISTER!", createdUser: null }).status(500);}
+  res.json({ success: true, createdUser: newUser }).status(200);}
+  else{res.json({ success: false, createdUser: null }).status(500);}
 });
 
 //Login
@@ -37,8 +29,10 @@ router.post("/login",async (req, res) => {
     // Crear el token
     const token = jwt.sign(
       {
-        nombre: User.nombre,
+        nombre: selectedUser.name,
         mail: User.mail,
+        signDate: Date.now(),
+        date: Date(Date.now()),
       },
       TOKEN_SECRET
     );

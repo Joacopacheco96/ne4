@@ -20,7 +20,8 @@ headers: {
 },
 body: JSON.stringify({"user":{
   "mail":mail,
-  "password":pass
+  "password":pass,
+  "dateLogin":Date(Date.now()),
   }
 }),
 })
@@ -47,6 +48,8 @@ body: JSON.stringify({"user":{
             <input type="password" className="form-control" onChange={handlepass} id="password"/>
           </div>
           <button type="button" className="btn btn-primary" onClick={send}>Entrar</button>
+          <button type="button" className="btn btn-primary" onClick={()=>navigate('/register')}>Registrarse!</button>
+
 
     </div>
   )
