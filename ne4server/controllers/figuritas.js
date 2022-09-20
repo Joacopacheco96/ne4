@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const knex =require('../db/knex');
+const knex = require("../db/knex");
 const pool = require("../db/db.js");
 
 router.get("/", (req, res, next) => {
-knex
+
+  knex
     .columns("id", "name", "category", "url", "have", "repeat")
     .select()
     .from("figuritas")
@@ -53,14 +54,19 @@ router.get("/repetidas", (req, res, next) => {
 });
 
 // modificar have column
-router.post('/repetidas',async (req,res,next) => {
-  const figuritaToChange=req.body.figurita;
-    const query=await pool.query('UPDATE figuritas SET "have"=NOT have WHERE id=$1',[figuritaToChange.id]);
-    const updatedRows=query.rowCount;
-    if (updatedRows==1){
-    res.json({updated : "success"}).status(200);}
-    else{res.json({updated : "ERROR"}).status(400);}
-    next();
+router.post("/repetidas", async (req, res, next) => {
+  const figuritaToChange = req.body.figurita;
+  const query = await pool.query(
+    'UPDATE figuritas SET "have"=NOT have WHERE id=$1',
+    [figuritaToChange.id]
+  );
+  const updatedRows = query.rowCount;
+  if (updatedRows == 1) {
+    res.json({ updated: "success" }).status(200);
+  } else {
+    res.json({ updated: "ERROR" }).status(400);
+  }
+  next();
 });
 
 module.exports = router;

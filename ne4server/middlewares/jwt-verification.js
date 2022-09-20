@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const TOKEN_SECRET = 'estoesunsecreto'
 
-
 const verifyToken = (req, res, next) => {
     const token = req.header('auth-token') 
 

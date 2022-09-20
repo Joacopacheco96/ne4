@@ -3,18 +3,23 @@ import { React, useState, useEffect } from "react";
 const Main = () => {
   const [database, setDatabase] = useState([]);
 
-useEffect(() => {          
+  useEffect(() => {          
     home();
-    }, []);
+    },[] );
 
 function home() {
         fetch(`http://localhost:3001/figuritas/`, {
-      method: "GET",})
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'auth-token':localStorage.getItem('jwt')
+      }})
       .then((response) => response.json())
       .then((result) => {setDatabase(result)}
       );
     }
-function tengo () {
+function tengo() {
             fetch(`http://localhost:3001/figuritas/tengo/`, {
           method: "GET",})
           .then((response) => response.json())
@@ -22,6 +27,28 @@ function tengo () {
           );
       
   };
+
+  // onClick={handlehave(figurita)}
+  const handlehave = (figurita) => {
+  
+    fetch(`http://localhost:3001/figuritas/repetidas`, {
+  method: "GET",
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'auth-token':localStorage.getItem('jwt'),
+body: JSON.stringify({
+  "figurita": {
+    "id": figurita.id,
+    "have": figurita.have,
+  }
+}),
+  }})
+  .then((response) => response.json())
+  .then((result) => {setDatabase(result)}
+  );
+
+  }
 
   return (
     <div>
@@ -38,7 +65,7 @@ function tengo () {
               <p>Nombre: {figurita.name}</p>
               <p>Categoria: {figurita.category}</p>
               <p>Repetidas: {figurita.repeat}</p>
-              <button className="iftengo">Tengo</button>
+              <button >Tengo</button>
               <p>----------------------------------</p>
             </div>
           );

@@ -26,9 +26,9 @@ body: JSON.stringify({"user":{
 })
 .then(response => response.json())
         .then((result) => {
-            if(result.success==true){
+            if(result.success===true){
+                localStorage.setItem('jwt',result.token);
                 navigate('/figuritas');
-                // localStorage.setItem("auth-token", result.auth_token)
             }else{
                 console.log("Fue lo primero que se me ocurrio, usuario no ingreesado")
             }

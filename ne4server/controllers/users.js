@@ -7,13 +7,13 @@ const {
   verifyToken,
 } = require("../middlewares/jwt-verification");
 
-//get*users token valid
-router.get("/", verifyToken, async (req, res, next) => {
-  const queryUsers = await pool.query("SELECT * FROM users");
-  const users = queryUsers.rows;
-  res.json({ error: null, data: users }).status(200);
-  next();
-});
+//get*users SOLO PRUEBA
+// router.get("/all", async (req, res, next) => {
+//   const queryUsers = await pool.query("SELECT * FROM users");
+//   const users = queryUsers.rows;
+//   res.json({ error: null, data: users }).status(200);
+//   next();
+// });
 
 //Register
 router.post("/register", async (req, res) => {
@@ -52,7 +52,4 @@ router.post("/login",async (req, res) => {
       .status(200);
   }
 });
-
-router.get("/:id", (req, res) => {});
-
 module.exports = router;
