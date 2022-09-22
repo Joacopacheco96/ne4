@@ -43,7 +43,7 @@ body: JSON.stringify({"figurita":{
   }
   );
   }
-  const handleqty = (figurita) => {
+  const handleqty = (figurita,operator) => {
     fetch(`http://localhost:3001/figuritas/have/`, {
   method: "POST",
   headers: {
@@ -84,8 +84,8 @@ body: JSON.stringify({"figurita":{
               <p>Nombre: {figurita.name}</p>
               <p>Categoria: {figurita.category}</p>
               <p>Repetidas: {figurita.repeat}</p>
-              <button onClick={()=>handleqty(figurita)}>-</button>
-              <button onClick={()=>handleqty(figurita)}>+</button>
+              <button onClick={()=>handleqty(figurita,'+')}>-</button>
+              <button onClick={()=>handleqty(figurita,'-')}>+</button>
               <button onClick={()=>handlehave(figurita)}>{figurita.have?'Tengo':'No Tengo'}</button>
               <p>----------------------------------</p>
             </div>

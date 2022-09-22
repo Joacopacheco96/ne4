@@ -17,5 +17,8 @@
     "knex": "^2.3.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.3"
   }
 }
